@@ -1,5 +1,7 @@
 # AI Data Analyst Agent
 
+**Live demo:** [ai-data-analyst-derleensaini.streamlit.app](https://ai-data-analyst-derleensaini.streamlit.app/)
+
 A Streamlit app where you upload a CSV, ask questions in plain English, and get
 answers backed by real SQL queries, Python analysis, and charts instead of the
 model's guesswork. An agent loop decides which tools to use, checks its own
@@ -87,7 +89,7 @@ The question set and full results are in tests/.
 ## Running locally
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/derleensaini/ai-data-analyst.git
 cd data-analyst-agent
 pip install -r requirements.txt
 echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
