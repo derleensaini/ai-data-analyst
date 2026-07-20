@@ -1,0 +1,6 @@
+streamlit>=1.35
+pandas>=2.2
+duckdb>=1.0
+plotly>=5.22
+anthropic>=0.34
+python-dotenv>=1.0

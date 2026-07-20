@@ -1,0 +1,15 @@
+[theme]
+base = "light"
+primaryColor = "#1E40AF"
+backgroundColor = "#F8FAFC"
+secondaryBackgroundColor = "#EDF2F9"
+textColor = "#0F172A"
+linkColor = "#1E40AF"
+codeBackgroundColor = "#EEF2F7"
+borderColor = "#DBE3EF"
+baseRadius = "10px"
+font = "'Fira Sans', sans-serif"
+codeFont = "'Fira Code', monospace"
+
+[browser]
+gatherUsageStats = false
