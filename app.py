@@ -24,6 +24,7 @@ from profiling import (
 )
 
 MAX_VISIBLE_FINDINGS = 8
+MAX_QUESTIONS_PER_SESSION = 15
 
 ACCENT = "#1E40AF"
 
@@ -651,6 +652,17 @@ def render_chat(use_clean: bool) -> None:
             render_figures(msg.get("tool_events", []), key_prefix=f"msg{idx}")
             render_tool_events(msg.get("tool_events", []))
 
+    # Per-session question cap (survives dataset switches) so a shared
+    # deployment can't rack up unbounded API usage from one browser tab.
+    st.session_state.setdefault("questions_asked", 0)
+    if st.session_state["questions_asked"] >= MAX_QUESTIONS_PER_SESSION:
+        st.info(
+            f"You've used all {MAX_QUESTIONS_PER_SESSION} questions for this "
+            "session — thanks for kicking the tires! Refresh the page to "
+            "start a fresh session."
+        )
+        return
+
     # Suggestion chips appear only while the conversation is empty. A
     # clicked chip becomes the question, exactly as if it had been typed.
     clicked = None
@@ -660,6 +672,7 @@ def render_chat(use_clean: bool) -> None:
     question = st.chat_input("Ask a question about your data") or clicked
     if not question:
         return
+    st.session_state["questions_asked"] += 1
 
     st.session_state["chat_history"].append({"role": "user", "content": question})
     with st.chat_message("user"):

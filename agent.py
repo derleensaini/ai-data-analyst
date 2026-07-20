@@ -185,11 +185,23 @@ TOOLS = [RUN_SQL_TOOL, RUN_PYTHON_TOOL, MAKE_CHART_TOOL]
 
 
 def get_client() -> anthropic.Anthropic | None:
-    """Return an Anthropic client, or None when no API key is configured."""
-    load_dotenv(Path(__file__).parent / ".env")
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    """Return an Anthropic client, or None when no API key is configured.
+
+    Checks Streamlit secrets first (how Streamlit Community Cloud provides
+    the key), then falls back to the local .env file.
+    """
+    key = None
+    try:
+        import streamlit as st
+        key = st.secrets.get("ANTHROPIC_API_KEY")
+    except Exception:
+        key = None  # no secrets file, or running outside Streamlit
+    if not key:
+        load_dotenv(Path(__file__).parent / ".env")
+        key = os.environ.get("ANTHROPIC_API_KEY")
+    if not key:
         return None
-    return anthropic.Anthropic()
+    return anthropic.Anthropic(api_key=key)
 
 
 def build_data_context(view: str, profile: dict, default_log: list[dict],
